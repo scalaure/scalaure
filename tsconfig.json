@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "references": [
+    {
+      "path": "packages/frontend"
+    },
+    {
+      "path": "packages/backend"
+    },
+    {
+      "path": "packages/common"
+    }
+  ]
+}
