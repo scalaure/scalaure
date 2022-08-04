@@ -1,0 +1,7 @@
+{
+  "name": "@scalaure/root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
