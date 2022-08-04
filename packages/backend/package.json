@@ -1,0 +1,19 @@
+{
+  "name": "@scalaure/backend",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/env": "^4.0.0",
+    "@scalaure/common": "0.0.1",
+    "fastify": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.6.3",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
+  }
+}

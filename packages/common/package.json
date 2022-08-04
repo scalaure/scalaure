@@ -6,5 +6,8 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.24.27"
   }
 }
