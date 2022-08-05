@@ -9,7 +9,10 @@ const schema = Type.Object({
   BASE_URL: Type.String({ default: '/api' }),
   PASSWORD_SALT_OR_ROUNDS: Type.Union([Type.String(), Type.Number()], {
     default: 10
-  })
+  }),
+  SESSION_SECRET: Type.String(),
+  SESSION_COOKIE_NAME: Type.String(),
+  NODE_ENV: Type.Union([Type.Literal('development'), Type.Literal('production')], { default: 'development' })
 });
 
 declare module 'fastify' {

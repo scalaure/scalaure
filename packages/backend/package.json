@@ -7,8 +7,10 @@
     "dev": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
+    "@fastify/cookie": "^7.3.1",
     "@fastify/env": "^4.0.0",
     "@fastify/sensible": "^5.1.0",
+    "@fastify/session": "^9.0.0",
     "@fastify/type-provider-typebox": "^2.2.0",
     "@prisma/client": "^4.1.1",
     "@scalaure/common": "0.0.1",
