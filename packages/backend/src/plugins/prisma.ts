@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import fp from 'fastify-plugin';
+import { PrismaErrorCode } from 'utils/prismaErrors';
+import { isPrismaError } from 'utils/typeguards';
 import type { FastifyPluginAsync } from 'fastify';
 
 declare module 'fastify' {
@@ -10,13 +12,28 @@ declare module 'fastify' {
 
 const prismaPlugin: FastifyPluginAsync = fp(async fastify => {
   const prisma = new PrismaClient();
-
   await prisma.$connect();
 
   fastify.decorate('prisma', prisma);
-
   fastify.addHook('onClose', async fastify => {
     await fastify.prisma.$disconnect();
+  });
+
+  const originalErrorHandler = fastify.errorHandler;
+
+  fastify.setErrorHandler((err, request, reply) => {
+    if (isPrismaError(err)) {
+      switch (err.code) {
+        case PrismaErrorCode.UniqueKeyViolation:
+          if (err.meta.target.includes('email')) {
+            return fastify.httpErrors.conflict('Provided email is already in use.');
+          }
+        case PrismaErrorCode.RecordNotFound:
+          return fastify.httpErrors.notFound('The resource you are trying to access does not exist.');
+      }
+    }
+
+    originalErrorHandler(err, request, reply);
   });
 });
 

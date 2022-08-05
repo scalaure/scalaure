@@ -35,7 +35,6 @@
     ],
     "@typescript-eslint/prefer-optional-chain": "error",
     "@typescript-eslint/restrict-template-expressions": ["error", { "allowNullish": true }],
-    "@typescript-eslint/switch-exhaustiveness-check": "error",
     "functional/no-let": ["error", { "allowLocalMutation": true, "ignorePattern": "^mutable" }],
     "functional/no-loop-statement": "error",
     "functional/no-this-expression": "error",
