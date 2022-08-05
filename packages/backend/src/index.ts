@@ -1,17 +1,16 @@
-import { fastify } from './server';
+import { createServer } from './server';
 
 const start = async () => {
-  const { config } = fastify;
-
   try {
-    const address = await fastify.listen({
-      host: config.HOST,
-      port: config.PORT
+    const server = await createServer({ logger: true });
+    const address = await server.listen({
+      host: server.config.HOST,
+      port: server.config.PORT
     });
 
-    console.log(`✨ Server started at ${address}!`);
+    console.log(`✨ Server has started running at ${address}!`);
   } catch (err) {
-    fastify.log.error(err);
+    console.error(err);
     process.exit(1);
   }
 };
