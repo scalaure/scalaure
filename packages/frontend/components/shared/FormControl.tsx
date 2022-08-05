@@ -1,31 +1,31 @@
-import type { SignInData } from 'components/SignUp';
-import type { ReactNode } from 'react';
-import type { RegisterOptions, UseFormRegister } from 'react-hook-form';
+import type { FormValues } from 'components/SignUp';
+import type { UseFormRegister } from 'react-hook-form';
+import type { Children } from 'types/types';
 
-interface Props {
-  readonly children?: ReactNode;
-  readonly id: keyof SignInData;
-  readonly options: RegisterOptions;
+interface Props extends Children {
+  readonly id: keyof FormValues;
   readonly placeholder: string;
-  readonly register: UseFormRegister<SignInData>;
+  readonly register: UseFormRegister<FormValues>;
   readonly type?: string;
 }
 
-export const FormControl = ({ children, id, options, placeholder, register, type = 'text' }: Props) => {
+export const FormControl = ({ children, id, placeholder, register, type = 'text' }: Props) => {
   return (
-    <div className='relative'>
-      <label className='sr-only' htmlFor={id}>
-        {placeholder}
-      </label>
+    <>
+      <div className='relative'>
+        <label className='sr-only' htmlFor={id}>
+          {placeholder}
+        </label>
 
-      <input
-        className='w-full py-3 pl-3 pr-12 text-sm border-2 border-gray-200 rounded'
-        id={id}
-        type={type}
-        placeholder={placeholder}
-        {...register(id, options)}
-      />
-      {children}
-    </div>
+        <input
+          className='w-full py-3 pl-3 pr-12 text-sm border-2 border-gray-200 rounded'
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          {...register(id)}
+        />
+        {children}
+      </div>
+    </>
   );
 };

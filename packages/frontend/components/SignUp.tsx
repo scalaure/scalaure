@@ -1,27 +1,39 @@
+import { useUserContext } from 'contexts/UserCtx';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { object, string, ref } from 'yup';
 import { FormControl } from './shared/FormControl';
+import type { SubmitHandler } from 'react-hook-form';
+import type { InferType } from 'yup';
 
-export interface SignInData {
-  readonly email: string;
-  readonly fullName: string;
-  readonly password: string;
-  readonly passwordRepeat: string;
-}
+export type FormValues = InferType<typeof registerFormSchema>;
+
+const registerFormSchema = object({
+  fullName: string().min(3, 'Name is too short').required('Full name is required'),
+  email: string().email('Invalid email address').required('Email is required'),
+  password: string().min(6, 'Password is too short').max(16, 'Password is too long').required('Password is required'),
+  confirmPassword: string()
+    .oneOf([ref('password'), null], 'Passwords must match')
+    .required('Confirm password')
+});
 
 export const SignUp = () => {
-  const {
-    formState: { errors },
-    handleSubmit,
-    register,
-    watch
-  } = useForm<SignInData>();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onSignIn = (data: SignInData) => {
-    console.log(data);
+  const { handleSubmit, register, reset } = useForm<FormValues>();
+  const { setUser } = useUserContext();
+
+  const onSubmit: SubmitHandler<FormValues> = async data => {
+    const isValid = await registerFormSchema.isValid(data);
+
+    if (isValid) {
+      setUser({ email: data.email, fullName: data.fullName });
+      reset();
+    }
+    console.log(isValid);
   };
-
-  console.log(errors);
 
   return (
     <div className='max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8'>
@@ -34,26 +46,9 @@ export const SignUp = () => {
         </p>
       </div>
 
-      <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit(onSignIn)}>
-        <FormControl
-          id='fullName'
-          placeholder='Full Name'
-          register={register}
-          options={{ required: 'Name is required', minLength: 5 }}
-        />
-        <FormControl
-          id='email'
-          placeholder='Email'
-          type='email'
-          register={register}
-          options={{
-            required: 'Email address is required',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Email is invalid'
-            }
-          }}
-        >
+      <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit(onSubmit)}>
+        <FormControl id='fullName' placeholder='Full Name' register={register} />
+        <FormControl id='email' placeholder='Email' type='email' register={register}>
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               className='w-5 h-5'
@@ -71,20 +66,11 @@ export const SignUp = () => {
             </svg>
           </span>
         </FormControl>
-        <FormControl
-          id='password'
-          placeholder='Password'
-          type='password'
-          register={register}
-          options={{
-            required: 'You must specify a password',
-            minLength: {
-              value: 8,
-              message: 'Password must have at least 8 characters'
-            }
-          }}
-        >
-          <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
+        <FormControl id='password' placeholder='Password' type={showPassword ? 'text' : 'password'} register={register}>
+          <button
+            className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4 z-10'
+            onClick={() => setShowPassword(prev => !prev)}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='w-5 h-5 text-gray-400'
@@ -100,16 +86,18 @@ export const SignUp = () => {
                 d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
               />
             </svg>
-          </span>
+          </button>
         </FormControl>
         <FormControl
-          id='passwordRepeat'
+          id='confirmPassword'
           placeholder='Confirm password'
-          type='password'
+          type={showConfirmPassword ? 'text' : 'password'}
           register={register}
-          options={{ validate: value => (value !== watch('password') ? 'The passwords do not match' : true) }}
         >
-          <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
+          <button
+            className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4'
+            onClick={() => setShowConfirmPassword(prev => !prev)}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='w-5 h-5 text-gray-400'
@@ -125,7 +113,7 @@ export const SignUp = () => {
                 d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
               />
             </svg>
-          </span>
+          </button>
         </FormControl>
 
         <div className='flex items-center justify-between'>
