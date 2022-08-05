@@ -8,11 +8,18 @@
   },
   "dependencies": {
     "@fastify/env": "^4.0.0",
+    "@fastify/sensible": "^5.1.0",
+    "@fastify/type-provider-typebox": "^2.2.0",
+    "@prisma/client": "^4.1.1",
     "@scalaure/common": "0.0.1",
+    "@sinclair/typebox": "^0.24.27",
+    "bcrypt": "^5.0.1",
     "fastify": "^4.3.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "nodemon": "^2.0.19",
+    "prisma": "^4.1.1",
     "ts-node": "^10.9.1"
   }
 }
