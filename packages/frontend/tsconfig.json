@@ -11,7 +11,7 @@
     "incremental": true,
     "baseUrl": ".",
     "composite": true,
-    "noEmit": true,
+    "noEmit": false,
     "strict": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

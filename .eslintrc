@@ -14,12 +14,7 @@
     "sort-destructure-keys",
     "typescript-sort-keys"
   ],
-  "extends": [
-    "prettier",
-    "plugin:import/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier"
-  ],
+  "extends": ["plugin:import/recommended", "plugin:@typescript-eslint/recommended-requiring-type-checking", "prettier"],
   "rules": {
     "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "@typescript-eslint/consistent-type-imports": ["error", { "disallowTypeAnnotations": false }],
