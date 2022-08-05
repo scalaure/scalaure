@@ -7,7 +7,6 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "functional",
-    "prettier",
     "import",
     "@typescript-eslint",
     "unicorn",
@@ -15,7 +14,12 @@
     "sort-destructure-keys",
     "typescript-sort-keys"
   ],
-  "extends": ["plugin:import/recommended", "plugin:@typescript-eslint/recommended-requiring-type-checking", "prettier"],
+  "extends": [
+    "prettier",
+    "plugin:import/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
+  ],
   "rules": {
     "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "@typescript-eslint/consistent-type-imports": ["error", { "disallowTypeAnnotations": false }],
@@ -64,8 +68,7 @@
     "prefer-const": "error",
     "require-await": "error",
     "sort-destructure-keys/sort-destructure-keys": [2, { "caseSensitive": false }],
-    "typescript-sort-keys/interface": "error",
-    "prettier/prettier": "error"
+    "typescript-sort-keys/interface": "error"
   },
   "ignorePatterns": ["next.config.js"]
 }

@@ -4,8 +4,16 @@
       "jsx": true
     }
   },
-  "extends": ["next/core-web-vitals", "next"],
+  "extends": ["plugin:react-hooks/recommended", "next/core-web-vitals", "next"],
   "rules": {
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "react/no-unescaped-entities": "off"
   }
 }
