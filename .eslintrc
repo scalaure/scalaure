@@ -14,12 +14,7 @@
     "sort-destructure-keys",
     "typescript-sort-keys"
   ],
-  "extends": [
-    "prettier",
-    "plugin:import/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier"
-  ],
+  "extends": ["plugin:import/recommended", "plugin:@typescript-eslint/recommended-requiring-type-checking"],
   "rules": {
     "@typescript-eslint/consistent-type-assertions": ["error", { "assertionStyle": "never" }],
     "@typescript-eslint/consistent-type-imports": ["error", { "disallowTypeAnnotations": false }],
@@ -45,7 +40,6 @@
     "functional/no-loop-statement": "error",
     "functional/no-this-expression": "error",
     "functional/prefer-readonly-type": "error",
-    "import/dynamic-import-chunkname": "error",
     "import/no-anonymous-default-export": "error",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",
