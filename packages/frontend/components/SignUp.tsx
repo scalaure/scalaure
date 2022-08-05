@@ -1,12 +1,27 @@
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 import { FormControl } from './shared/FormControl';
-import type { FormEvent } from 'react';
+
+export interface SignInData {
+  readonly email: string;
+  readonly fullName: string;
+  readonly password: string;
+  readonly passwordRepeat: string;
+}
 
 export const SignUp = () => {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Form submited');
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    watch
+  } = useForm<SignInData>();
+
+  const onSignIn = (data: SignInData) => {
+    console.log(data);
   };
+
+  console.log(errors);
 
   return (
     <div className='max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8'>
@@ -19,9 +34,26 @@ export const SignUp = () => {
         </p>
       </div>
 
-      <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit}>
-        <FormControl id='name' placeholder='Full Name' />
-        <FormControl id='email' placeholder='Email' type='email'>
+      <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit(onSignIn)}>
+        <FormControl
+          id='fullName'
+          placeholder='Full Name'
+          register={register}
+          options={{ required: 'Name is required', minLength: 5 }}
+        />
+        <FormControl
+          id='email'
+          placeholder='Email'
+          type='email'
+          register={register}
+          options={{
+            required: 'Email address is required',
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Email is invalid'
+            }
+          }}
+        >
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               className='w-5 h-5'
@@ -39,7 +71,19 @@ export const SignUp = () => {
             </svg>
           </span>
         </FormControl>
-        <FormControl id='password' placeholder='Password' type='password'>
+        <FormControl
+          id='password'
+          placeholder='Password'
+          type='password'
+          register={register}
+          options={{
+            required: 'You must specify a password',
+            minLength: {
+              value: 8,
+              message: 'Password must have at least 8 characters'
+            }
+          }}
+        >
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -58,7 +102,13 @@ export const SignUp = () => {
             </svg>
           </span>
         </FormControl>
-        <FormControl id='passwordRepeat' placeholder='Confirm password' type='password'>
+        <FormControl
+          id='passwordRepeat'
+          placeholder='Confirm password'
+          type='password'
+          register={register}
+          options={{ validate: value => (value !== watch('password') ? 'The passwords do not match' : true) }}
+        >
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -79,7 +129,7 @@ export const SignUp = () => {
         </FormControl>
 
         <div className='flex items-center justify-between'>
-          <Link href='/register'>
+          <Link href='/login'>
             <a className='underline'>Already have an account? Sign in!</a>
           </Link>
 
