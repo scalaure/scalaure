@@ -28,3 +28,10 @@ export type TypeBoxRouteHandlerMethod<T extends TypeBoxFastifySchema> = RouteHan
   T,
   TypeBoxTypeProvider
 >;
+
+export interface UserCredentials {
+  readonly email: string;
+  readonly firstName: string;
+  readonly hashedPassword: string;
+  readonly lastName: string;
+}

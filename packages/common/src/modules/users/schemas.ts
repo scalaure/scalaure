@@ -1,7 +1,8 @@
 import { Type } from '@sinclair/typebox';
 import { createTypeBoxFastifySchema } from '../../utils/schema';
+import type { Static } from '@sinclair/typebox';
 
-export const User = Type.Object({
+export const UserSchema = Type.Object({
   id: Type.Number(),
   email: Type.String(),
   roles: Type.Array(Type.String()),
@@ -11,6 +12,8 @@ export const User = Type.Object({
   })
 });
 
+export type User = Static<typeof UserSchema>;
+
 export const createUserSchema = createTypeBoxFastifySchema({
   body: Type.Object({
     fullName: Type.String(),
@@ -18,6 +21,6 @@ export const createUserSchema = createTypeBoxFastifySchema({
     password: Type.String()
   }),
   response: {
-    201: User
+    201: UserSchema
   }
 });

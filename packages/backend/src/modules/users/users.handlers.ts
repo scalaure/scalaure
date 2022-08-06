@@ -5,7 +5,7 @@ import type { TypeBoxRouteHandlerMethod } from 'types';
 export const createUser: TypeBoxRouteHandlerMethod<typeof createUserSchema> = async (request, reply) => {
   const {
     config: { PASSWORD_SALT_OR_ROUNDS },
-    prisma
+    userRegister
   } = request.server;
   const { email, fullName, password } = request.body;
 
@@ -18,17 +18,6 @@ export const createUser: TypeBoxRouteHandlerMethod<typeof createUserSchema> = as
     isNaN(Number(PASSWORD_SALT_OR_ROUNDS)) ? PASSWORD_SALT_OR_ROUNDS : Number(PASSWORD_SALT_OR_ROUNDS)
   );
 
-  const user = await prisma.user.create({
-    data: {
-      email,
-      password: hashedPassword,
-      details: {
-        create: { firstName, lastName }
-      },
-      roles: ['USER']
-    },
-    include: { details: true }
-  });
-
+  const user = await userRegister({ email, firstName, lastName, hashedPassword });
   return reply.status(201).send(user);
 };
