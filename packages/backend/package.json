@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently --kill-others-on-fail 'yarn dev:docker-compose' 'yarn wait-on tcp:5432' 'yarn dev:nodemon'",
     "dev:init": "concurrently --kill-others-on-fail 'yarn dev:docker-compose' 'wait-on tcp:5432' 'yarn prisma migrate dev --name init' 'docker compose stop'",
-    "dev:docker-compose": "docker compose up -d",
+    "dev:docker-compose": "docker compose up",
     "dev:nodemon": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
