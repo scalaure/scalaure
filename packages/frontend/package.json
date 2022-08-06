@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.7",
     "@scalaure/common": "0.0.1",
+    "@tailwindcss/forms": "^0.5.2",
     "clsx": "^1.2.1",
     "next": "12.2.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.34.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/react": "18.0.15",
