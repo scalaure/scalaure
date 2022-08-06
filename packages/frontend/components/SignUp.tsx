@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useUserContext } from 'contexts/UserCtx';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { Alert } from './shared/Alert';
 import { FormControl } from './shared/FormControl';
 import type { SubmitHandler } from 'react-hook-form';
 import type { InferType } from 'yup';
+import { useUserContext } from 'contexts/UserCtx';
 
 export type FormValues = InferType<typeof registerFormSchema>;
 

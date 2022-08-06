@@ -1,7 +1,7 @@
-import { getSafeContext } from 'helpers/getSafeCtx';
 import { createContext, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { Children } from 'types/types';
+import { getSafeContext } from 'helpers/getSafeCtx';
 
 export interface User {
   readonly email: string;

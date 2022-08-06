@@ -1,5 +1,5 @@
-import { useUserContext } from 'contexts/UserCtx';
 import { useRouter } from 'next/router';
+import { useUserContext } from 'contexts/UserCtx';
 
 interface Props {
   readonly redirectTo?: string;
