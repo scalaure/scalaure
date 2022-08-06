@@ -3,7 +3,7 @@ import Fastify from 'fastify';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { FastifyServerOptions } from 'fastify';
 
-export const createServer = async <T extends FastifyServerOptions>(opts?: T) => {
+export const createServer = async (opts?: FastifyServerOptions) => {
   const fastify = Fastify(opts).withTypeProvider<TypeBoxTypeProvider>();
 
   await fastify.register(import('@fastify/cookie'));
