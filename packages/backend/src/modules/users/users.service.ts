@@ -1,26 +1,18 @@
 import fp from 'fastify-plugin';
-import type { User } from '@scalaure/common';
-import type { UserCredentials } from 'types';
+import type { User } from '@prisma/client';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    readonly userRegister: (credentials: UserCredentials) => Promise<User>;
+    readonly findUserBy: (
+      where: { readonly email?: string; readonly id?: number },
+      details?: boolean
+    ) => Promise<User | null>;
   }
 }
 
 const usersService = fp(fastify => {
-  fastify.decorate('userRegister', async ({ email, firstName, hashedPassword, lastName }: UserCredentials) => {
-    const user = await fastify.prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        details: {
-          create: { firstName, lastName }
-        },
-        roles: ['USER']
-      },
-      include: { details: true }
-    });
+  fastify.decorate('findUserBy', async (where: { readonly email?: string; readonly id?: number }, details = false) => {
+    const user = await fastify.prisma.user.findFirst({ where, include: { details } });
     return user;
   });
 });
