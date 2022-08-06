@@ -18,21 +18,17 @@ export const createUser: TypeBoxRouteHandlerMethod<typeof createUserSchema> = as
     isNaN(Number(PASSWORD_SALT_OR_ROUNDS)) ? PASSWORD_SALT_OR_ROUNDS : Number(PASSWORD_SALT_OR_ROUNDS)
   );
 
-  try {
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        details: {
-          create: { firstName, lastName }
-        },
-        roles: ['USER']
+  const user = await prisma.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      details: {
+        create: { firstName, lastName }
       },
-      include: { details: true }
-    });
+      roles: ['USER']
+    },
+    include: { details: true }
+  });
 
-    return reply.status(201).send(user);
-  } catch (err) {
-    reply.conflict('User with this email already exists.');
-  }
+  return reply.status(201).send(user);
 };

@@ -1,10 +1,9 @@
 import { createUserSchema } from '@scalaure/common';
-import { createUser } from './handlers';
+import { createUser } from './users.handlers';
 import type { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox';
 
-const usersPlugin: FastifyPluginCallbackTypebox = (fastify, options, done) => {
+const usersPlugin: FastifyPluginCallbackTypebox = (fastify, _options, done) => {
   fastify.post('/', { schema: createUserSchema }, createUser);
-
   done();
 };
 

@@ -26,10 +26,10 @@ const prismaPlugin: FastifyPluginAsync = fp(async fastify => {
       switch (err.code) {
         case PrismaErrorCode.UniqueKeyViolation:
           if (err.meta.target.includes('email')) {
-            return fastify.httpErrors.conflict('Provided email is already in use.');
+            reply.conflict('Provided e-mail is already in use.');
           }
         case PrismaErrorCode.RecordNotFound:
-          return fastify.httpErrors.notFound('The resource you are trying to access does not exist.');
+          reply.notFound('The resource you are trying to access does not exist.');
       }
     }
 
