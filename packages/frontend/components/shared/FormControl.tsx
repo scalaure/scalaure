@@ -1,15 +1,17 @@
+import { ErrorMsg } from './ErrorMsg';
 import type { FormValues } from 'components/SignUp';
-import type { UseFormRegister } from 'react-hook-form';
+import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 import type { Children } from 'types/types';
 
 interface Props extends Children {
+  readonly errors: FieldErrors<FormValues>;
   readonly id: keyof FormValues;
   readonly placeholder: string;
   readonly register: UseFormRegister<FormValues>;
   readonly type?: string;
 }
 
-export const FormControl = ({ children, id, placeholder, register, type = 'text' }: Props) => {
+export const FormControl = ({ children, errors, id, placeholder, register, type = 'text' }: Props) => {
   return (
     <>
       <div className='relative'>
@@ -26,6 +28,7 @@ export const FormControl = ({ children, id, placeholder, register, type = 'text'
         />
         {children}
       </div>
+      {errors[id] && <ErrorMsg msg={errors[id]?.message} />}
     </>
   );
 };

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { object, string, ref } from 'yup';
-import { ErrorMsg } from './shared/ErrorMsg';
+import { Alert } from './shared/Alert';
 import { FormControl } from './shared/FormControl';
 import type { SubmitHandler } from 'react-hook-form';
 import type { InferType } from 'yup';
@@ -23,40 +23,33 @@ const registerFormSchema = object({
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const {
     formState: { errors },
     handleSubmit,
     register,
     reset
-  } = useForm<FormValues>({ resolver: yupResolver(registerFormSchema) });
+  } = useForm<FormValues>({ resolver: yupResolver(registerFormSchema), reValidateMode: 'onSubmit' });
   const { setUser } = useUserContext();
 
-  const onSubmit: SubmitHandler<FormValues> = async data => {
-    const isValid = await registerFormSchema.isValid(data);
-
-    if (isValid) {
-      setUser({ email: data.email, fullName: data.fullName });
-      reset();
-    }
+  const onSubmit: SubmitHandler<FormValues> = data => {
+    setUser({ email: data.email, fullName: data.fullName });
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 1500);
+    reset();
   };
 
   return (
     <div className='max-w-screen-xl px-4 py-16 mx-auto sm:px-6 lg:px-8'>
       <div className='max-w-lg mx-auto text-center'>
-        <h1 className='text-2xl font-bold sm:text-3xl'>Get started today!</h1>
-
-        <p className='mt-4 text-gray-500'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque ipsa culpa autem,
-          at itaque nostrum!
-        </p>
+        {showAlert && <Alert variant='success' msg='Account created!' className='mb-6' />}
+        <h1 className='text-2xl font-bold sm:text-3xl'>Sign up</h1>
       </div>
 
       <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit(onSubmit)}>
-        <FormControl id='fullName' placeholder='Full Name' register={register} />
-        {errors.fullName && <ErrorMsg msg={errors.fullName.message} />}
-        <FormControl id='email' placeholder='Email' type='email' register={register}>
-          {errors.email && <ErrorMsg msg={errors.email.message} />}
+        <FormControl id='fullName' placeholder='Full Name' register={register} errors={errors} />
+        <FormControl id='email' placeholder='Email' type='email' register={register} errors={errors}>
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               className='w-5 h-5'
@@ -74,8 +67,13 @@ export const SignUp = () => {
             </svg>
           </span>
         </FormControl>
-        <FormControl id='password' placeholder='Password' type={showPassword ? 'text' : 'password'} register={register}>
-          {errors.password && <ErrorMsg msg={errors.password.message} />}
+        <FormControl
+          id='password'
+          placeholder='Password'
+          type={showPassword ? 'text' : 'password'}
+          register={register}
+          errors={errors}
+        >
           <button
             className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4 z-10'
             onClick={() => setShowPassword(prev => !prev)}
@@ -103,6 +101,7 @@ export const SignUp = () => {
           placeholder='Confirm password'
           type={showConfirmPassword ? 'text' : 'password'}
           register={register}
+          errors={errors}
         >
           <button
             className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4'
@@ -126,16 +125,13 @@ export const SignUp = () => {
             </svg>
           </button>
         </FormControl>
-        {errors.confirmPassword && <ErrorMsg msg={errors.confirmPassword.message} />}
-
-        <div className='flex items-center justify-between'>
+        <div className='sm:flex items-center justify-between'>
           <Link href='/login'>
-            <a className='underline'>Already have an account? Sign in!</a>
+            <a className='underline block mb-3 sm:inline'>Already have an account? Sign in!</a>
           </Link>
-
           <button
             type='submit'
-            className='inline-block px-5 py-3 ml-3 text-sm font-medium text-white bg-blue-500 rounded-lg'
+            className='block w-full sm:w-auto sm:inline-block px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-lg'
           >
             Sign Up
           </button>
