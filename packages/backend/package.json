@@ -4,7 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
+    "dev": "concurrently --kill-others-on-fail 'yarn dev:docker-compose' 'yarn wait-on tcp:5432' 'yarn dev:nodemon'",
+    "dev:init": "concurrently --kill-others-on-fail 'yarn dev:docker-compose' 'wait-on tcp:5432' 'yarn prisma migrate dev --name init' 'docker compose stop'",
+    "dev:docker-compose": "docker compose up -d",
+    "dev:nodemon": "nodemon --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' src/index.ts"
   },
   "dependencies": {
     "@fastify/cookie": "^7.3.1",
@@ -20,8 +23,10 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
     "prisma": "^4.1.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "wait-on": "^6.0.1"
   }
 }
