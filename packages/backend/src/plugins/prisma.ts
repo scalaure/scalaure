@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import fp from 'fastify-plugin';
-import { PrismaErrorCode } from 'utils/prismaErrors';
-import { isPrismaError } from 'utils/typeguards';
+import { PrismaErrorCode } from '../utils/prismaErrors';
+import { isPrismaError } from '../utils/typeguards';
 import type { FastifyPluginAsync } from 'fastify';
 
 declare module 'fastify' {

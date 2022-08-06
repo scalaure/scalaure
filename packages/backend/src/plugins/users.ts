@@ -1,5 +1,6 @@
 import fp from 'fastify-plugin';
 import type { User } from '@prisma/client';
+import type { FastifyPluginCallback } from 'fastify';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -10,11 +11,13 @@ declare module 'fastify' {
   }
 }
 
-const usersService = fp(fastify => {
+const usersPlugin: FastifyPluginCallback = (fastify, _options, done) => {
   fastify.decorate('findUserBy', async (where: { readonly email?: string; readonly id?: number }, details = false) => {
     const user = await fastify.prisma.user.findFirst({ where, include: { details } });
     return user;
   });
-});
 
-export default usersService;
+  done();
+};
+
+export default fp(usersPlugin);
