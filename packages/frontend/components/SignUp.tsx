@@ -1,8 +1,10 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useUserContext } from 'contexts/UserCtx';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { object, string, ref } from 'yup';
+import { ErrorMsg } from './shared/ErrorMsg';
 import { FormControl } from './shared/FormControl';
 import type { SubmitHandler } from 'react-hook-form';
 import type { InferType } from 'yup';
@@ -10,9 +12,9 @@ import type { InferType } from 'yup';
 export type FormValues = InferType<typeof registerFormSchema>;
 
 const registerFormSchema = object({
-  fullName: string().min(3, 'Name is too short').required('Full name is required'),
-  email: string().email('Invalid email address').required('Email is required'),
-  password: string().min(6, 'Password is too short').max(16, 'Password is too long').required('Password is required'),
+  fullName: string().required('Full name is required').min(3, 'Name is too short'),
+  email: string().required('Email is required').email('Invalid email address'),
+  password: string().required('Password is required').min(6, 'Password is too short').max(16, 'Password is too long'),
   confirmPassword: string()
     .oneOf([ref('password'), null], 'Passwords must match')
     .required('Confirm password')
@@ -22,7 +24,12 @@ export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { handleSubmit, register, reset } = useForm<FormValues>();
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+    reset
+  } = useForm<FormValues>({ resolver: yupResolver(registerFormSchema) });
   const { setUser } = useUserContext();
 
   const onSubmit: SubmitHandler<FormValues> = async data => {
@@ -32,7 +39,6 @@ export const SignUp = () => {
       setUser({ email: data.email, fullName: data.fullName });
       reset();
     }
-    console.log(isValid);
   };
 
   return (
@@ -48,7 +54,9 @@ export const SignUp = () => {
 
       <form className='max-w-md mx-auto mt-8 mb-0 space-y-4' onSubmit={handleSubmit(onSubmit)}>
         <FormControl id='fullName' placeholder='Full Name' register={register} />
+        {errors.fullName && <ErrorMsg msg={errors.fullName.message} />}
         <FormControl id='email' placeholder='Email' type='email' register={register}>
+          {errors.email && <ErrorMsg msg={errors.email.message} />}
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
             <svg
               className='w-5 h-5'
@@ -67,9 +75,11 @@ export const SignUp = () => {
           </span>
         </FormControl>
         <FormControl id='password' placeholder='Password' type={showPassword ? 'text' : 'password'} register={register}>
+          {errors.password && <ErrorMsg msg={errors.password.message} />}
           <button
             className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4 z-10'
             onClick={() => setShowPassword(prev => !prev)}
+            type='button'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -97,6 +107,7 @@ export const SignUp = () => {
           <button
             className='absolute text-gray-500 -translate-y-1/2 top-1/2 right-4'
             onClick={() => setShowConfirmPassword(prev => !prev)}
+            type='button'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -115,6 +126,7 @@ export const SignUp = () => {
             </svg>
           </button>
         </FormControl>
+        {errors.confirmPassword && <ErrorMsg msg={errors.confirmPassword.message} />}
 
         <div className='flex items-center justify-between'>
           <Link href='/login'>
