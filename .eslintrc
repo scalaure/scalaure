@@ -1,10 +1,29 @@
 {
   "root": true,
-  "plugins": ["prettier", "@typescript-eslint"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["prettier", "@typescript-eslint", "import", "functional"],
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "parser": "@typescript-eslint/parser"
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/no-confusing-non-null-assertion": "error",
+    "@typescript-eslint/no-floating-promises": ["error", { "ignoreVoid": true }],
+    "@typescript-eslint/no-unused-vars": "error",
+    "functional/no-let": "warn",
+    "no-const-assign": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "require-await": "error",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "never",
+        "alphabetize": { "order": "asc" },
+        "groups": ["builtin", "external", "parent", "sibling", "index", "type"]
+      }
+    ]
+  }
 }
