@@ -15,7 +15,7 @@ const sessionPlugin: FastifyPluginAsync = async fastify => {
   await fastify.register(fastifySession, {
     secret: config.SESSION_SECRET,
     cookieName: config.SESSION_COOKIE_NAME,
-    cookie: { secure: config.NODE_ENV === 'production' }
+    cookie: { secure: process.env.NODE_ENV === 'production' }
   });
 };
 
