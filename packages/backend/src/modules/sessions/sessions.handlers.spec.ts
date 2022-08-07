@@ -9,8 +9,7 @@ let cookie: string;
 let server: FastifyInstance<Server, IncomingMessage, ServerResponse, FastifyLoggerInstance, TypeBoxTypeProvider>;
 
 beforeAll(async () => {
-  const start = await createServer({ logger: false });
-  server = start;
+  server = await createServer({ logger: false });
 });
 
 describe('POST /sessions', () => {
