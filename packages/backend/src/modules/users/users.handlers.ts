@@ -45,11 +45,15 @@ export const activeUser: TypeBoxRouteHandlerMethod<typeof activeUserSchema> = as
   const { prisma } = request.server;
   const { token, userId } = request.params;
 
-  const { id } = await prisma.userTokens.findFirstOrThrow({ where: { token, userId, tokenType: 'ACCOUNT' } });
+  const data = await prisma.userTokens.findFirst({ where: { token, userId, tokenType: 'ACCOUNT' } });
+
+  if (!data) {
+    return reply.notFound('Incorrect token.');
+  }
 
   await prisma.$transaction([
     prisma.user.update({ where: { id: userId }, data: { active: true } }),
-    prisma.userTokens.delete({ where: { id } })
+    prisma.userTokens.delete({ where: { id: data.id } })
   ]);
 
   return reply.status(204).send();
