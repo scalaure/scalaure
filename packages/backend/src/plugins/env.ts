@@ -11,8 +11,8 @@ const schema = Type.Object({
   PASSWORD_SALT_OR_ROUNDS: Type.Union([Type.String(), Type.Number()], {
     default: 10
   }),
-  SESSION_SECRET: Type.String(),
-  SESSION_COOKIE_NAME: Type.String(),
+  SESSION_SECRET: Type.String({ default: 'FaLo2p4Ngx9EAQFEHpHgneZjlcCK32Yv' }),
+  SESSION_COOKIE_NAME: Type.String({ default: 'sessionId' }),
   NODE_ENV: Type.Union([Type.Literal('development'), Type.Literal('production')], { default: 'development' })
 });
 
