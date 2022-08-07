@@ -24,3 +24,13 @@ export const createUserSchema = createTypeBoxFastifySchema({
     201: UserSchema
   }
 });
+
+export const activeUserSchema = createTypeBoxFastifySchema({
+  params: Type.Object({
+    userId: Type.Number(),
+    token: Type.String()
+  }),
+  response: {
+    204: Type.Object({})
+  }
+});

@@ -8,12 +8,14 @@ generator client {
 }
 
 model User {
-  id            Int         @id() @default(autoincrement())
-  email         String      @unique
+  id            Int          @id() @default(autoincrement())
+  email         String       @unique
   password      String
+  active        Boolean
   roles         UserRole[]
-  details       UserDetails @relation(fields: [userDetailsId], references: [id])
-  userDetailsId Int         @unique
+  userTokens    UserTokens[]
+  details       UserDetails  @relation(fields: [userDetailsId], references: [id])
+  userDetailsId Int          @unique
 
   @@map("users")
 }
@@ -27,7 +29,22 @@ model UserDetails {
   @@map("users_details")
 }
 
+model UserTokens {
+  id        Int       @id() @default(autoincrement())
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  token     String
+  tokenType TokenType
+
+  @@map("users_tokens")
+}
+
 enum UserRole {
   USER
   ADMIN
+}
+
+enum TokenType {
+  ACCOUNT
+  PASSWORD
 }
