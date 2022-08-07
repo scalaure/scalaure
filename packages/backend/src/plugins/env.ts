@@ -2,6 +2,7 @@ import fastifyEnv from '@fastify/env';
 import { Type } from '@sinclair/typebox';
 import fp from 'fastify-plugin';
 import type { Static } from '@sinclair/typebox';
+import type { FastifyPluginAsync } from 'fastify';
 
 const schema = Type.Object({
   HOST: Type.String({ default: '127.0.0.1' }),
@@ -21,8 +22,8 @@ declare module 'fastify' {
   }
 }
 
-const envPlugin = fp(async fastify => {
+const envPlugin: FastifyPluginAsync = async fastify => {
   await fastify.register(fastifyEnv, { schema, dotenv: true });
-});
+};
 
-export default envPlugin;
+export default fp(envPlugin);
