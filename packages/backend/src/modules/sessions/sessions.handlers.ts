@@ -12,6 +12,10 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
     return reply.notFound('Incorrect username or password.');
   }
 
+  if (!user.active) {
+    return reply.forbidden('Account is not activated.');
+  }
+
   request.session.userId = user.id;
 
   return { loggedin: true }; // TODO: change response body
