@@ -1,9 +1,4 @@
 {
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "extends": ["plugin:react-hooks/recommended", "next/core-web-vitals", "next"],
   "rules": {
     "react/display-name": "off",
