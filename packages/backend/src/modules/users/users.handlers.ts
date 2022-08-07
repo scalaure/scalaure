@@ -30,17 +30,12 @@ export const createUser: TypeBoxRouteHandlerMethod<typeof createUserSchema> = as
       details: {
         create: { firstName, lastName }
       },
+      userTokens: {
+        create: { token, tokenType: 'ACCOUNT' }
+      },
       roles: ['USER']
     },
     include: { details: true }
-  });
-
-  await prisma.userTokens.create({
-    data: {
-      userId: user.id,
-      tokenType: 'ACCOUNT',
-      token
-    }
   });
 
   return reply.status(201).send(user);
@@ -52,8 +47,10 @@ export const activeUser: TypeBoxRouteHandlerMethod<typeof activeUserSchema> = as
 
   const { id } = await prisma.userTokens.findFirstOrThrow({ where: { token, userId, tokenType: 'ACCOUNT' } });
 
-  await prisma.user.update({ where: { id: userId }, data: { active: true } });
-  await prisma.userTokens.delete({ where: { id } });
+  await prisma.$transaction([
+    prisma.user.update({ where: { id: userId }, data: { active: true } }),
+    prisma.userTokens.delete({ where: { id } })
+  ]);
 
   return reply.status(204).send();
 };
