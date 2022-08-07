@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useUserContext } from 'contexts/UserCtx';
 import Link from 'next/link';
+import { useUserContext } from 'providers/UserCtx';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { object, string, ref } from 'yup';

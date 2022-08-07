@@ -1,5 +1,5 @@
-import { IndexPageComponent } from 'components/page-components/IndexPageComponent';
+import { IndexPageContent } from 'components/page-contents/IndexPageContent';
 
 export default function IndexPage() {
-  return <IndexPageComponent />;
+  return <IndexPageContent />;
 }
