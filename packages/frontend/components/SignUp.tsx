@@ -1,10 +1,14 @@
+import { SIGN_IN_PATH } from 'constants/paths';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import { useUserContext } from 'providers/UserCtx';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { MdAlternateEmail } from 'react-icons/md';
 import { object, string, ref } from 'yup';
 import { Alert } from './shared/Alert';
+import { Button } from './shared/Button';
 import { FormControl } from './shared/FormControl';
 import type { SubmitHandler } from 'react-hook-form';
 import type { InferType } from 'yup';
@@ -51,20 +55,7 @@ export const SignUp = () => {
         <FormControl id='fullName' placeholder='Full Name' register={register} errors={errors} />
         <FormControl id='email' placeholder='Email' type='email' register={register} errors={errors}>
           <span className='absolute text-gray-500 -translate-y-1/2 pointer-events-none top-1/2 right-4'>
-            <svg
-              className='w-5 h-5'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'
-              />
-            </svg>
+            <MdAlternateEmail style={{ height: '1.5rem', width: '1.5rem' }} />
           </span>
         </FormControl>
         <FormControl
@@ -79,21 +70,11 @@ export const SignUp = () => {
             onClick={() => setShowPassword(prev => !prev)}
             type='button'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='w-5 h-5 text-gray-400'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
-              />
-            </svg>
+            {showPassword ? (
+              <AiOutlineEyeInvisible style={{ height: '1.5rem', width: '1.5rem' }} />
+            ) : (
+              <AiOutlineEye style={{ height: '1.5rem', width: '1.5rem' }} />
+            )}
           </button>
         </FormControl>
         <FormControl
@@ -108,33 +89,21 @@ export const SignUp = () => {
             onClick={() => setShowConfirmPassword(prev => !prev)}
             type='button'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='w-5 h-5 text-gray-400'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M15 12a3 3 0 11-6 0 3 3 0 016 0z' />
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z'
-              />
-            </svg>
+            {showConfirmPassword ? (
+              <AiOutlineEyeInvisible style={{ height: '1.5rem', width: '1.5rem' }} />
+            ) : (
+              <AiOutlineEye style={{ height: '1.5rem', width: '1.5rem' }} />
+            )}
           </button>
         </FormControl>
         <div className='sm:flex items-center justify-between'>
-          <Link href='/login'>
+          <Link href={SIGN_IN_PATH}>
             <a className='underline block mb-3 sm:inline'>Already have an account? Sign in!</a>
           </Link>
-          <button
-            type='submit'
-            className='block w-full sm:w-auto sm:inline-block px-5 py-3 text-sm font-medium text-white bg-blue-500 rounded-lg'
-          >
-            Sign Up
-          </button>
+
+          <Button className='w-full' type='submit'>
+            Sign up
+          </Button>
         </div>
       </form>
     </div>
