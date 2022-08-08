@@ -22,7 +22,10 @@ declare module 'fastify' {
 }
 
 const envPlugin: FastifyPluginAsync = async fastify => {
-  await fastify.register(fastifyEnv, { schema, dotenv: true });
+  await fastify.register(fastifyEnv, {
+    schema,
+    dotenv: true
+  });
 };
 
 export default fp(envPlugin);

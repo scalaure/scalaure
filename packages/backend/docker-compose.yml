@@ -8,3 +8,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: scalaure123
       POSTGRES_DB: dev
+
+  db-test:
+    image: postgres:14.4-alpine
+    ports:
+      - 5431:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: scalaure123
+      POSTGRES_DB: test

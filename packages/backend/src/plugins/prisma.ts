@@ -28,8 +28,10 @@ const prismaPlugin: FastifyPluginAsync = async fastify => {
           if (err.meta.target.includes('email')) {
             reply.conflict('Provided e-mail is already in use.');
           }
+          break;
         case PrismaErrorCode.RecordNotFound:
           reply.notFound('The resource you are trying to access does not exist.');
+          break;
       }
     }
 

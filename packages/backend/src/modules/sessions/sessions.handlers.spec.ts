@@ -1,6 +1,7 @@
 import { UserSchema } from '@scalaure/common';
 import { createServer } from 'server';
-import { ajv, invalidEmailOrPasswordResponse } from 'utils';
+import { ajv, inactiveAccountResponse, invalidEmailOrPasswordResponse } from 'utils';
+import { mockActiveUser, mockInactiveUser } from 'utils/mocks';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { FastifyInstance, FastifyLoggerInstance } from 'fastify';
 import type { Server, IncomingMessage, ServerResponse } from 'http';
@@ -10,6 +11,17 @@ let server: FastifyInstance<Server, IncomingMessage, ServerResponse, FastifyLogg
 
 beforeAll(async () => {
   server = await createServer({ logger: false });
+  // Create two users, one active and one inactive
+  await Promise.all([
+    server.prisma.user.create({
+      data: mockActiveUser,
+      include: { details: true }
+    }),
+    server.prisma.user.create({
+      data: mockInactiveUser,
+      include: { details: true }
+    })
+  ]);
 });
 
 describe('POST /sessions', () => {
@@ -18,7 +30,7 @@ describe('POST /sessions', () => {
       method: 'POST',
       url: '/api/sessions',
       payload: {
-        email: 'test@test.com',
+        email: 'active@test.com',
         password: 'Test123!'
       }
     });
@@ -31,19 +43,34 @@ describe('POST /sessions', () => {
     cookie = response.headers['Set-Cookie'] as string;
   });
 
+  it('should return 403 that the account is not active', async () => {
+    const response = await server.inject({
+      method: 'POST',
+      url: '/api/sessions',
+      payload: {
+        email: 'inactive@test.com',
+        password: 'Test123!'
+      }
+    });
+
+    expect(response.statusCode).toEqual(403);
+    expect(response.headers['Set-Cookie']).not.toBeDefined();
+    expect(JSON.parse(response.payload)).toMatchObject(inactiveAccountResponse);
+  });
+
   it('should return 404 that password is invalid', async () => {
     const response = await server.inject({
       method: 'POST',
       url: '/api/sessions',
       payload: {
-        email: 'test@test.com',
+        email: 'active@test.com',
         password: 'Test1234!'
       }
     });
 
     expect(response.statusCode).toEqual(404);
     expect(response.headers['Set-Cookie']).not.toBeDefined();
-    expect(JSON.parse(response.payload)).toMatchSnapshot(invalidEmailOrPasswordResponse);
+    expect(JSON.parse(response.payload)).toMatchObject(invalidEmailOrPasswordResponse);
   });
 
   it('should return 404 that e-mail is invalid', async () => {
@@ -58,7 +85,7 @@ describe('POST /sessions', () => {
 
     expect(response.statusCode).toEqual(404);
     expect(response.headers['Set-Cookie']).not.toBeDefined();
-    expect(JSON.parse(response.payload)).toMatchSnapshot(invalidEmailOrPasswordResponse);
+    expect(JSON.parse(response.payload)).toMatchObject(invalidEmailOrPasswordResponse);
   });
 });
 
@@ -78,5 +105,8 @@ describe('GET /sessions/me', () => {
 });
 
 afterAll(async () => {
-  await server.close();
+  // Delete all tables
+  // TODO: make it better (remove only users created in this test)
+  await server.prisma.$queryRaw`drop schema public cascade;`;
+  await server.prisma.$queryRaw`create schema public;`;
 });

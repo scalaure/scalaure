@@ -9,7 +9,7 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
   const user = await findUserBy({ email });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return reply.notFound('Incorrect username or password.');
+    return reply.notFound('Incorrect e-mail or password.');
   }
 
   if (!user.active) {
@@ -18,5 +18,5 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
 
   request.session.userId = user.id;
 
-  return { loggedin: true }; // TODO: change response body
+  return reply.code(201).send({ ...user }); // TODO: change response body
 };

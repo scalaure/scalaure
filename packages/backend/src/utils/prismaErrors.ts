@@ -338,14 +338,12 @@ export interface QueryParameterLimitExceeded extends Prisma.PrismaClientKnownReq
  */
 export interface MissingFullTextSearchIndex extends Prisma.PrismaClientKnownRequestError {
   readonly code: 'P2030';
-  readonly meta: {};
 }
 /**
  * Prisma needs to perform transactions, which requires your MongoDB server to be run as a replica set. https://pris.ly/d/mongodb-replica-set
  */
 export interface MongoReplicaSetRequired extends Prisma.PrismaClientKnownRequestError {
   readonly code: 'P2031';
-  readonly meta: {};
 }
 /**
  * Error converting field \"{field}\" of expected non-nullable type \"{expected_type}\", found incompatible value of \"{found}\".
