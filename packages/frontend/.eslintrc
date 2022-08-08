@@ -2,6 +2,7 @@
   "parserOptions": {
     "project": "packages/frontend/tsconfig.json"
   },
+  "plugins": ["sort-destructure-keys", "typescript-sort-keys"],
   "extends": ["plugin:react-hooks/recommended", "next/core-web-vitals", "next"],
   "rules": {
     "react/display-name": "off",
@@ -12,6 +13,9 @@
         "html": true
       }
     ],
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "sort-destructure-keys/sort-destructure-keys": [2, { "caseSensitive": false }],
+    "typescript-sort-keys/interface": "error",
+    "functional/prefer-readonly-type": "error"
   }
 }

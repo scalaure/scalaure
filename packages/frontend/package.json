@@ -25,6 +25,8 @@
     "@types/react-dom": "18.0.6",
     "autoprefixer": "^10.4.8",
     "eslint-config-next": "12.2.4",
+    "eslint-plugin-sort-destructure-keys": "^1.4.0",
+    "eslint-plugin-typescript-sort-keys": "^2.1.0",
     "postcss": "^8.4.14",
     "tailwindcss": "^3.1.7"
   }

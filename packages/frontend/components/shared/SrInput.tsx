@@ -2,15 +2,15 @@ import clsx from 'clsx';
 import type { InputHTMLAttributes } from 'react';
 
 interface Props {
-  id: string;
-  placeholder: InputHTMLAttributes<HTMLInputElement>['placeholder'];
-  type?: InputHTMLAttributes<HTMLInputElement>['type'];
-  inputClass?: string;
-  wrapperClass?: string;
-  icon?: JSX.Element;
+  readonly icon?: JSX.Element;
+  readonly id: string;
+  readonly inputClass?: string;
+  readonly placeholder: InputHTMLAttributes<HTMLInputElement>['placeholder'];
+  readonly type?: InputHTMLAttributes<HTMLInputElement>['type'];
+  readonly wrapperClass?: string;
 }
 
-export const SRInput = ({ id, placeholder, type = 'text', inputClass, wrapperClass, icon }: Props) => {
+export const SRInput = ({ icon, id, inputClass, placeholder, type = 'text', wrapperClass }: Props) => {
   const classes = clsx(icon && 'relative', wrapperClass);
 
   return (

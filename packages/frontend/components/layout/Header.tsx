@@ -1,6 +1,6 @@
 import { SIGN_IN_PATH, SIGN_UP_PATH } from 'constants/paths';
 import { Link } from 'components/shared/Link';
-import { SRInput } from 'components/shared/SrInput';
+import { SRInput } from 'components/shared/SRInput';
 import Image from 'next/image';
 import { AiOutlineSearch } from 'react-icons/ai';
 import logo from '../../public/scalaure.png';
