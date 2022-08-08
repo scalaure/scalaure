@@ -1,5 +1,5 @@
 interface Props {
-  readonly msg?: string;
+  readonly msg: string;
 }
 
 export const ErrorMsg = ({ msg }: Props) => {

@@ -1,16 +1,19 @@
-import { SIGN_IN_PATH, SIGN_UP_PATH } from 'constants/paths';
+import { INDEX_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from 'constants/paths';
 import { Link } from 'components/shared/Link';
 import { SRInput } from 'components/shared/SRInput';
 import Image from 'next/image';
+import NextLink from 'next/link';
 import { AiOutlineSearch } from 'react-icons/ai';
 import logo from '../../public/scalaure.png';
 
 export const Header = () => {
   return (
     <header className='flex p-4 items-center gap-4'>
-      <div className='w-72 mx-4'>
-        <Image src={logo} alt='Scalaure' />
-      </div>
+      <NextLink href={INDEX_PATH}>
+        <a className='w-72 mx-4'>
+          <Image src={logo} alt='Scalaure' />
+        </a>
+      </NextLink>
       <SRInput
         id='courses'
         placeholder='Search courses'

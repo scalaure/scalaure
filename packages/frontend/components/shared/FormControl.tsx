@@ -12,6 +12,8 @@ interface Props extends Children {
 }
 
 export const FormControl = ({ children, errors, id, placeholder, register, type = 'text' }: Props) => {
+  const msg = errors[id]?.message;
+
   return (
     <>
       <div className='relative'>
@@ -28,7 +30,7 @@ export const FormControl = ({ children, errors, id, placeholder, register, type 
         />
         {children}
       </div>
-      {errors[id] && <ErrorMsg msg={errors[id]?.message} />}
+      {msg && <ErrorMsg msg={msg} />}
     </>
   );
 };
