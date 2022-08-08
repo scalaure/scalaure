@@ -1,6 +1,6 @@
 import { INDEX_PATH } from 'constants/paths';
 import clsx from 'clsx';
-import L from 'next/link';
+import NextLink from 'next/link';
 import type { LinkHTMLAttributes } from 'react';
 
 interface Props extends LinkHTMLAttributes<HTMLAnchorElement> {
@@ -14,10 +14,10 @@ export const Link = ({ children, className, href = INDEX_PATH, ...rest }: Props)
   );
 
   return (
-    <L href={href}>
+    <NextLink href={href}>
       <a className={classes} {...rest}>
         {children}
       </a>
-    </L>
+    </NextLink>
   );
 };
