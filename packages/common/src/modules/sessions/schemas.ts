@@ -17,3 +17,9 @@ export const getSessionSchema = createTypeBoxFastifySchema({
     200: UserSchema
   }
 });
+
+export const deleteSessionSchema = createTypeBoxFastifySchema({
+  response: {
+    204: Type.Object({})
+  }
+});

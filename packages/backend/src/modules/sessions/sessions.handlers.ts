@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import type { createSessionSchema, getSessionSchema } from '@scalaure/common';
+import type { createSessionSchema, getSessionSchema, deleteSessionSchema } from '@scalaure/common';
 import type { TypeBoxRouteHandlerMethod } from 'types';
 
 export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema> = async (request, reply) => {
@@ -30,4 +30,10 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
 
 export const getSession: TypeBoxRouteHandlerMethod<typeof getSessionSchema> = async request => {
   return request.userData;
+};
+
+export const deleteSession: TypeBoxRouteHandlerMethod<typeof deleteSessionSchema> = (request, reply) => {
+  request.session.destroy(() => {
+    reply.status(204).send();
+  });
 };
