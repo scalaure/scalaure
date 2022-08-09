@@ -34,6 +34,6 @@ export const getSession: TypeBoxRouteHandlerMethod<typeof getSessionSchema> = as
 
 export const deleteSession: TypeBoxRouteHandlerMethod<typeof deleteSessionSchema> = (request, reply) => {
   request.session.destroy(() => {
-    reply.status(204).send();
+    reply.clearCookie(request.server.config.SESSION_COOKIE_NAME).status(204).send();
   });
 };
