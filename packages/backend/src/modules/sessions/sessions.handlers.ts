@@ -28,12 +28,14 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
   return user;
 };
 
-export const getSession: TypeBoxRouteHandlerMethod<typeof getSessionSchema> = async request => {
+export const getSession: TypeBoxRouteHandlerMethod<typeof getSessionSchema> = request => {
   return request.userData;
 };
 
 export const deleteSession: TypeBoxRouteHandlerMethod<typeof deleteSessionSchema> = (request, reply) => {
-  request.session.destroy(() => {
-    reply.clearCookie(request.server.config.SESSION_COOKIE_NAME).status(204).send();
+  const { SESSION_COOKIE_NAME } = request.server.config;
+
+  request.session.destroy(async () => {
+    await reply.clearCookie(SESSION_COOKIE_NAME).status(204).send();
   });
 };
