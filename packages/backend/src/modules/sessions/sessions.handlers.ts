@@ -1,12 +1,19 @@
 import bcrypt from 'bcrypt';
-import type { createSessionSchema } from '@scalaure/common';
+import type { createSessionSchema, getSessionSchema, deleteSessionSchema } from '@scalaure/common';
 import type { TypeBoxRouteHandlerMethod } from 'types';
 
 export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema> = async (request, reply) => {
-  const { findUserBy } = request.server;
+  const { prisma } = request.server;
   const { email, password } = request.body;
 
-  const user = await findUserBy({ email });
+  if (request.session.userId) {
+    return reply.notAcceptable('You are already logged in.');
+  }
+
+  const user = await prisma.user.findFirst({
+    where: { email },
+    include: { details: true }
+  });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return reply.notFound('Incorrect username or password.');
@@ -18,5 +25,17 @@ export const createSession: TypeBoxRouteHandlerMethod<typeof createSessionSchema
 
   request.session.userId = user.id;
 
-  return { loggedin: true }; // TODO: change response body
+  return user;
+};
+
+export const getSession: TypeBoxRouteHandlerMethod<typeof getSessionSchema> = request => {
+  return request.userData;
+};
+
+export const deleteSession: TypeBoxRouteHandlerMethod<typeof deleteSessionSchema> = (request, reply) => {
+  const { SESSION_COOKIE_NAME } = request.server.config;
+
+  request.session.destroy(async () => {
+    await reply.clearCookie(SESSION_COOKIE_NAME).status(204).send();
+  });
 };
