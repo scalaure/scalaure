@@ -1,6 +1,6 @@
 import { INDEX_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from 'constants/paths';
 import { Link } from 'components/shared/Link';
-import { SRInput } from 'components/shared/SRInput';
+import { SRInput } from 'components/shared/SrInput';
 import Image from 'next/image';
 import NextLink from 'next/link';
 import { AiOutlineSearch } from 'react-icons/ai';
