@@ -2,11 +2,11 @@ import clsx from 'clsx';
 
 interface Props {
   readonly className?: string;
-  readonly msg: string;
+  readonly message: string;
   readonly variant?: 'warning' | 'success';
 }
 
-export const Alert = ({ className, msg, variant = 'warning' }: Props) => {
+export const Alert = ({ className, message, variant = 'warning' }: Props) => {
   const classes = clsx(
     'p-4 border rounded',
     variant === 'warning' && 'text-amber-700 bg-amber-50 border-amber-900/10',
@@ -16,7 +16,7 @@ export const Alert = ({ className, msg, variant = 'warning' }: Props) => {
 
   return (
     <div className={classes}>
-      <strong className='text-sm font-medium'>{msg}</strong>
+      <strong className='text-sm font-medium'>{message}</strong>
     </div>
   );
 };
